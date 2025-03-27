@@ -1,0 +1,114 @@
+[
+  {
+    "model": "apps.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Uy uchun",
+      "icon": "https://img.icons8.com/matisse/40/home.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 2,
+    "fields": {
+      "name": "Bolalar uchun",
+      "icon": "https://img.icons8.com/external-wanicon-lineal-color-wanicon/40/external-toys-kindergarten-wanicon-lineal-color-wanicon.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 3,
+    "fields": {
+      "name": "Sovg'a",
+      "icon": "https://img.icons8.com/fluency/40/gift--v2.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 4,
+    "fields": {
+      "name": "Ayollar",
+      "icon": "https://img.icons8.com/3d-fluency/40/businesswoman--v3.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 5,
+    "fields": {
+      "name": "Davolovchi mahsulotlar",
+      "icon": "https://img.icons8.com/matisse/40/supplement-bottle.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 6,
+    "fields": {
+      "name": "Erkaklar uchun",
+      "icon": "https://img.icons8.com/color/40/puffer-jacket.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 7,
+    "fields": {
+      "name": "Fitness",
+      "icon": "https://img.icons8.com/ios-filled/40/strength.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 8,
+    "fields": {
+      "name": "Davolovchi mazlar",
+      "icon": "https://img.icons8.com/ios/40/cream-tube.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 9,
+    "fields": {
+      "name": "Mashina uchun",
+      "icon": "https://img.icons8.com/plasticine/40/bmw.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 10,
+    "fields": {
+      "name": "Kitoblar",
+      "icon": "https://img.icons8.com/officel/40/book.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 11,
+    "fields": {
+      "name": "Aqilli soatlar",
+      "icon": "https://img.icons8.com/glyph-neue/40/apple-watch-apps.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 12,
+    "fields": {
+      "name": "Atir",
+      "icon": "https://img.icons8.com/external-justicon-blue-justicon/40/external-perfume-valentines-day-justicon-blue-justicon.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 13,
+    "fields": {
+      "name": "Yangi yil mahsulotlari",
+      "icon": "https://img.icons8.com/color/40/christmas-tree.png"
+    }
+  },
+  {
+    "model": "apps.Category",
+    "pk": 14,
+    "fields": {
+      "name": "Elektronika",
+      "icon": "https://img.icons8.com/ios-filled/40/multiple-devices.png"
+    }
+  }
+]

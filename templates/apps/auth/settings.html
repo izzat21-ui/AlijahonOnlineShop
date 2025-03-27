@@ -1,0 +1,120 @@
+{% extends 'apps/base/include.html' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row align-items-start">  <!-- Balandlikni bir xil qiladi -->
+            <!-- Sozlamalar (chap tomon) -->
+            <div class="col-lg-8 pe-lg-2">
+                <div class="card mb-3 h-100">  <!-- h-100 qo‘shildi -->
+                    <div class="card-header">
+                        <h5 class="mb-0">Sozlamalar</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <form class="row g-3" action="{% url 'settings' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-lg-6">
+                                <label for="id_first_name">Ismi</label>
+                                <input type="text" name="first_name" value="{{ request.user.first_name }}"
+                                       class="form-control" id="id_first_name"
+                                       maxlength="30">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_last_name">Familiya</label>
+                                <input type="text" name="last_name" value="{{ request.user.last_name }}"
+                                       class="form-control" id="id_last_name"
+                                       maxlength="40">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_region">Viloyat</label>
+                                <select name="region" class="form-control" id="id_region">
+                                    <option value="">Viloyatni tanlang</option>
+                                    {% for region in regions %}
+                                        {% if request.user.district.region.id == region.id %}
+                                            <option value="{{ region.id }}" selected>{{ region.name }}</option>
+                                        {% else %}
+                                            <option value="{{ region.id }}">{{ region.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6">
+                                Shahar/Tuman
+                                <select name="district_id" class="form-control" id="id_district">
+                                    {% if request.user.district %}
+                                        <option value="{{ request.user.district.id }}">{{ request.user.district.name }}</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_location">Manzil</label>
+                                <input type="text" name="address" value="{{ request.user.address }}"
+                                       class="form-control" id="id_location"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_telegram_id">Telegram ID</label>
+                                <input type="text" name="telegram_id" value="{{ request.user.telegram_id }}"
+                                       class="form-control" id="telegram_id"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_description">Siz haqingizda</label>
+                                <textarea name="about" class="form-control" cols="40" rows="4" maxlength="399"
+                                          id="id_description">{% if request.user.about %}{{ request.user.about }} {% endif %}
+                                </textarea>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end">
+                                <button class="btn btn-primary" type="submit">Saqlash</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parolni o'zgartirish (o'ng tomon) -->
+            <div class="col-lg-4 ps-lg-2">
+                <div class="card mb-3 h-100">  <!-- h-100 qo‘shildi -->
+                    <div class="card-header">
+                        <h5 class="mb-0">Parolni o'zgartirish</h5>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <h4 style="color: red">{{ message }}</h4>
+                            {% endfor %}
+
+                        {% endif %}
+                    </div>
+                    <div class="card-body bg-light">
+                        <form action="{% url 'change-password' %}" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="old-password"> Oldingi parol</label>
+                                <input type="password" class="form-control" id="old-password" name="old">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="new-password">Yangi parol</label>
+                                <input type="password" class="form-control" id="new-password" name="new">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirm-password">Yangi parolni takrorlash</label>
+                                <input type="password" class="form-control" id="confirm-password"
+                                       name="confirm">
+                            </div>
+
+                            <button class="btn btn-primary w-100" type="submit">Parolni yangilash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

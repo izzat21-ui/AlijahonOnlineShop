@@ -1,0 +1,69 @@
+{% extends 'apps/base/include.html' %}
+{% load humanize %}
+
+{% block body %}
+    <div class="container" id="productsList">
+        <div class="row g-4">
+            {% for product in products %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card border-0 rounded-3 overflow-hidden position-relative"
+                         style="background: #fff; transition: transform 0.2s ease;">
+                        <!-- Rasm -->
+                        <a href="{% url 'product-detail' product.slug %}" class="d-block text-center">
+                            <img src="{{ product.image.url }}"
+                                 class="img-fluid mx-auto d-block"
+                                 alt="{{ product.name }}"
+                                 style="height: 200px; object-fit: cover; border-radius: 5px 5px 0 0; max-width: 100%;">
+                        </a>
+
+                        <!-- Mahsulot ma'lumotlari -->
+                        <div class="p-3 text-start">
+                            <h6 class="mb-1 fw-semibold">
+                                <a href="{% url 'product-detail' product.slug %}"
+                                   class="text-dark text-decoration-none">
+                                    {{ product.name|truncatechars:25 }}
+                                </a>
+                            </h6>
+                            <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-danger fw-bold">
+                                    {{ product.price|floatformat:0|intcomma }} so'm
+                                </span>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-sm btn-outline-danger like-button"
+                                            data-product-id="{{ product.pk }}"
+                                            title="Add to Wish List">
+                                        <i class="far fa-heart {% if product.pk in liked_products %}fas text-danger{% endif %}"></i>
+                                    </button>
+                                    <a href="{% url 'product-detail' product.slug %}"
+                                       class="btn btn-sm btn-dark p-1"
+                                       title="Add to Cart">
+                                        <i class="fas fa-cart-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+
+
+    <!-- CSS -->
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .btn-sm {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}

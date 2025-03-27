@@ -1,0 +1,96 @@
+{% extends 'apps/base/include.html' %}
+{% load humanize %}
+{% block body %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="container border-bottom-4">
+                <div class="header_tab_menu ">
+                    <div class="header_menu active" style="overflow: auto">
+                        <a href="{% url 'product-list' 'all' %}"
+                           class="btn btn-default {% if session_category == None %}active{% endif %}">
+                            Barchasi
+                        </a>
+                        {% for category in categories %}
+
+                            <a href="{% url 'product-list' category.slug %}"
+                               class="btn btn-default {% if session_category and session_category.pk == category.pk %}active{% endif %}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="productsList">
+                <div class="content_grid">
+                    <div class="row">
+                        {% for product in products %}
+                            <div class="col-6 mb-2 col-md-4 col-lg-3"> <!-- Kartani kichikroq qilish -->
+                                <div class="border rounded-1 d-flex flex-column justify-content-between pb-2">
+                                    <!-- Padding kichraytirildi -->
+                                    <div class="overflow-hidden">
+                                        <div class="position-relative rounded-top overflow-hidden">
+                                            <a class="d-block" href="{% url 'product-detail' product.slug %}">
+                                                <img class="img-fluid rounded-top" src="{{ product.image.url }}"
+                                                     alt="Product Image"
+                                                     style="width: 260px; height: 260px; object-fit: cover;">
+                                                <!-- Rasm o‘lchami muvofiqlashtirildi -->
+                                            </a>
+                                        </div>
+
+                                        <div class="p-1"> <!-- Padding kamaytirildi -->
+                                            <h5 class="fs-1"> <!-- Matn kattaligi biroz kichraytirildi -->
+                                                <a class="text-dark"
+                                                   href="{% url 'product-detail' product.slug %}">{{ product.name }}</a>
+                                            </h5>
+                                            <p class="fs--1 mb-1">
+                                                <a class="text-500"
+                                                   href="{% url 'product-list' product.category.pk %}">{{ product.category.name }}</a>
+                                            </p>
+                                            <h5 class="fs-md-2 text-warning mb-1 d-flex align-items-center mb-2">
+                                                {{ product.price|floatformat:0|intcomma }} so'm
+                                            </h5>
+                                        </div>
+
+                                    </div>
+                                    <div class="d-flex flex-between-center px-1"> <!-- Ikkinchi padding kamaytirildi -->
+                                    </div>
+                                    <div class="d-flex flex-between-center px-0">
+                                        <div>
+                                            <span class="fa fa-star text-warning"></span>
+                                            <span class="fa fa-star text-warning"></span>
+                                            <span class="fa fa-star text-warning"></span>
+                                            <span class="fa fa-star text-warning"></span>
+                                            <span class="fa fa-star text-50"></span>
+                                            <span class="ms-0">(8)</span>
+                                        </div>
+                                        <div class="">
+                                            <a class="btn btn-sm btn-falcon-default me-2 like-button {% if product.pk in liked_products_id %}bg-danger{% endif %}"
+                                               href="
+
+                                                       {% if not request.user.is_authenticated %}{% url 'auth' %}{% else %}#!{% endif %}"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top" data-product-id="{{ product.pk }}"
+                                               title=""><span
+                                                    class="far fa-heart"></span></a><a
+                                                class="btn btn-sm btn-falcon-default"
+                                                href="{% url 'product-detail' product.slug %}" data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="
+
+                                                        {% if not request.user.is_authenticated %}{% url 'auth' %}{% else %}#!{% endif %}"><span
+                                                class="fas fa-cart-plus"></span></a></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
