@@ -85,6 +85,20 @@ class OrderUpdateView(UpdateView):
     success_url = reverse_lazy('operator')
 
 
+    def form_valid(self, form):
+        obj = self.get_object(self.get_queryset())
+        status = form.cleaned_data.get('status')
+        if obj.status != status and status == 'completed':
+            if obj.thread:
+                user = obj.thread.user
+                user.balance += obj.thread.product.sell_price - obj.thread.discount_sum
+                user.save()
+        return super().form_valid(form)
+
+
+
+
+
 
 
 

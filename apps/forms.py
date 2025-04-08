@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.forms import Form, Textarea, IntegerField, DecimalField
 from django.forms.fields import CharField
 from django.forms.models import ModelForm
-from apps.models import User, Order, Thread, Product, AdminSetting
+from apps.models import User, Order, Thread, Product, AdminSetting, Payment
 
 
 class AuthForm(Form):
@@ -74,7 +74,12 @@ class OrderForm(Form):
     def save(self, user):
         deliver_price = AdminSetting.objects.first().deliver_price
         order = Order.objects.create(**self.cleaned_data, owner_id=user.id)
-        order.amount = order.product.price * order.quantity + deliver_price
+        amount = order.product.price * order.quantity + deliver_price
+        thread_id = self.cleaned_data.get('thread_id')
+        if thread_id:
+            thread = Thread.objects.filter(pk=thread_id).first()
+            amount -= thread.discount_sum
+        order.amount = amount
         order.save()
         return order
 
@@ -104,15 +109,45 @@ class OperatorForm(Form):
     district_id = CharField(required=False)
 
 
-class OrderModelForm(ModelForm):
-    class Meta:
-        model = Order
-        fields = 'quantity', 'status', 'send_date', 'district', 'comment_operator'
 
+
+class OrderModelForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['comment_operator'].required = False
+        self.fields['quantity'].required = False
+        self.fields['status'].required = False
+        self.fields['send_date'].required = False
+        self.fields['district'].required = False
 
-        def clean_send_date(self):
-            send_date = str(self.cleaned_data.get('send_date')).replace('.', '-')
-            return send_date
+    class Meta:
+        model = Order
+        fields = ['quantity', 'status', 'send_date', 'district', 'comment_operator']
+
+    def clean_send_date(self):
+        send_date = self.cleaned_data.get('send_date')
+        if send_date:
+            send_date = send_date.strftime('%Y-%m-%d')  # Yangi formatga o'tkazish
+        return send_date
+
+
+class PaymentModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].required = False
+
+    class Meta:
+        model = Payment
+        fields = 'amount', 'card_number', 'user'
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount < 100000:
+            raise ValidationError("Minimal summa 100 ming so'm")
+        return amount
+
+    def clean_card_number(self):
+        card_number = self.cleaned_data.get('card_number')
+        if not card_number.isdigit() or len(card_number) != 16:
+            raise ValidationError('Karta nomerda muammo bor!')
+        return card_number
