@@ -63,6 +63,7 @@ class User(AbstractUser):
     phone_number = CharField(max_length=20, unique=True)
     district = ForeignKey('apps.District', on_delete=SET_NULL, null=True, blank=True)
     address = TextField()
+    balance = DecimalField(max_digits=10, decimal_places=0, default=0)
     telegram_id = BigIntegerField(unique=True, blank=True, null=True)
     about = TextField(blank=True, null=True)
     role = CharField(max_length=10, choices=RoleType, default=RoleType.USER)
@@ -139,6 +140,7 @@ class Order(Model):
     district = ForeignKey('apps.District', SET_NULL, null=True, blank=True, related_name='orders')
     comment_operator = TextField('')
     send_date = DateField(null=True, blank=True)
+    operator = ForeignKey('apps.User', SET_NULL, null=True, blank=True, related_name='operator_orders')
 
     @property
     def amount_summa(self):
@@ -163,12 +165,14 @@ class Payment(Model):
         COMPLETED = 'completed', 'Completed'
         CANCEL = 'cancel', 'Cancel'
 
-    user = ForeignKey('apps.User', on_delete=CASCADE)
+    user = ForeignKey('apps.User', on_delete=CASCADE, related_name='payments')
     amount = DecimalField(max_digits=10, decimal_places=2)
-    photo = ImageField(upload_to='payment/')
+    photo = ImageField(upload_to='payment/', null=True, blank=True)
     payment_at = DateTimeField(auto_now_add=True)
     status = CharField(max_length=10, choices=StatusType, default=StatusType.REVIEW)
     description = TextField(blank=True, null=True)
+    card_number = CharField(max_length=16)
+
 
 
 class AdminSetting(Model):
